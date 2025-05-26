@@ -14,6 +14,7 @@ const userRoutes = require('./routes/userRoutes'); // Import userRoutes
 const voucherRoutes = require('./routes/voucherRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const eventRoutes = require('./routes/eventRoutes');
+const pinRoutes = require('./routes/pinRoutes');
 const cron = require('node-cron');
 const { expirePendingBookings } = require('./controllers/bookingController');
 
@@ -98,6 +99,11 @@ app.use('/api/transactions', transactionRoutes);
 // → POST /api/events
 app.use('/api/events', eventRoutes);
 
+// Mount pin routes
+// → GET /api/pin
+// → POST /api/pin
+app.use('/api/pin', pinRoutes);
+
 // Tambahkan cron untuk expire booking otomatis
 // Jalankan setiap 1 menit
 cron.schedule('* * * * *', async () => {
@@ -109,7 +115,7 @@ cron.schedule('* * * * *', async () => {
 });
 
 // Global error handler
-app.use((err, req, res, _next) => { // Mark next as unused
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });

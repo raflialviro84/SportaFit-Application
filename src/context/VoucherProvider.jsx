@@ -71,6 +71,12 @@ export function VoucherProvider({ children }) {
     }
   };
 
+  // Fungsi untuk mengambil detail voucher by ID
+  const getVoucherById = async (id) => {
+    const result = await VoucherService.getVoucherById(id);
+    return result.data;
+  };
+
   const value = {
     vouchers,
     userVouchers,
@@ -78,6 +84,7 @@ export function VoucherProvider({ children }) {
     error,
     refreshVouchers,
     addVoucherToUser,
+    getVoucherById, // <-- tambahkan ini
     // ...tambahkan fungsi context lain jika perlu...
   };
 

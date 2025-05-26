@@ -148,6 +148,7 @@ function App() {
       <Route path="/faq" element={<PrivateRoute><FAQ1 /></PrivateRoute>} />
       <Route path="/profil" element={<PrivateRoute><Profil1 /></PrivateRoute>} />
       <Route path="/set-up-pin" element={<SetUpPinRoute><SetUpPin /></SetUpPinRoute>} />
+      <Route path="/voucher/:id" element={<PrivateRoute><Voucher2 /></PrivateRoute>} />
     </Routes>
   );
 }

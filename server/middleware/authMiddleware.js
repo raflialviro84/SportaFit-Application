@@ -5,6 +5,8 @@ const User = require('../models/userModel');
 // Middleware untuk memeriksa apakah user sudah login
 const authMiddleware = async (req, res, next) => {
   try {
+    // Debug: log Authorization header
+    console.log('Authorization header:', req.headers.authorization);
     let token;
     // Check for token in Authorization header
     const authHeader = req.headers.authorization;
@@ -26,9 +28,10 @@ const authMiddleware = async (req, res, next) => {
     
     // Verifikasi token
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
-    
+    console.log('Decoded JWT:', decoded);
     // Cari user berdasarkan ID dari token
     const user = await User.findOne({ where: { id: decoded.userId } });
+    console.log('User found:', user);
     
     if (!user) {
       return res.status(404).json({

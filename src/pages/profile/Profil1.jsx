@@ -6,6 +6,7 @@ import { IoArrowBack, IoChevronForward, IoPersonOutline, IoTicketOutline, IoNoti
 import { FaUserCircle } from "react-icons/fa";
 import { useAuth } from "../../context/auth-context";
 import UserService from "../../services/userService";
+import { hasPin } from "../../services/pinService";
 
 function Profil1() {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function Profil1() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [hasUserPin, setHasUserPin] = useState(null); // null: loading, true/false: loaded
 
   // Ambil data user dari backend jika belum ada di context
   useEffect(() => {
@@ -31,7 +33,7 @@ function Profil1() {
         } else {
           throw new Error("Failed to fetch user data");
         }
-      } catch (err) {
+      } catch {
         setError("Terjadi kesalahan saat memuat data. Silakan coba lagi.");
       } finally {
         setLoading(false);
@@ -40,11 +42,30 @@ function Profil1() {
     fetchUserData();
   }, [user]);
 
+  // Cek status PIN user
+  useEffect(() => {
+    const checkUserPin = async () => {
+      try {
+        const result = await hasPin();
+        setHasUserPin(result);
+      } catch (err) {
+        // Jika error 401, redirect ke login
+        if (err && err.message && err.message.includes('401')) {
+          alert('Sesi Anda telah habis, silakan login ulang.');
+          navigate('/login');
+        } else {
+          setHasUserPin(false);
+        }
+      }
+    };
+    checkUserPin();
+  }, [user, navigate]);
+
   // Fungsi untuk handle logout
   const handleLogout = () => {
     try {
       logout();
-    } catch (err) {
+    } catch {
       setError("Gagal logout. Silakan coba lagi.");
     }
   };
@@ -54,6 +75,9 @@ function Profil1() {
     switch (label) {
       case "Edit Profil":
         navigate("/edit-profil");
+        break;
+      case "Set-Up PIN":
+        navigate("/set-up-pin");
         break;
       case "Voucher":
         navigate("/voucher");
@@ -96,7 +120,12 @@ function Profil1() {
     {
       title: "Keamanan",
       items: [
-        { label: "Ubah PIN", icon: <IoKeyOutline size={20} /> },
+        // Render menu PIN sesuai status PIN user
+        hasUserPin === null
+          ? { label: "Cek PIN...", icon: <IoKeyOutline size={20} />, disabled: true }
+          : hasUserPin
+          ? { label: "Ubah PIN", icon: <IoKeyOutline size={20} /> }
+          : { label: "Set-Up PIN", icon: <IoKeyOutline size={20} /> },
         { label: "Kebijakan Privasi", icon: <IoShieldCheckmarkOutline size={20} /> },
       ],
     },
@@ -191,8 +220,9 @@ function Profil1() {
                   {section.items.map((item, idx) => (
                     <button
                       key={idx}
-                      onClick={() => handleMenuClick(item.label)}
-                      className="w-full flex items-center justify-between py-3 border-b border-gray-200"
+                      onClick={() => !item.disabled && handleMenuClick(item.label)}
+                      className={`w-full flex items-center justify-between py-3 border-b border-gray-200 ${item.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      disabled={item.disabled}
                     >
                       <div className="flex items-center gap-4 text-black">
                         {item.icon}
