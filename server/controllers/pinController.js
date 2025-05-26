@@ -64,9 +64,12 @@ exports.createPin = async (req, res) => {
         message: 'User sudah memiliki PIN. Gunakan endpoint update untuk mengubah PIN'
       });
     }
-    
+    // Debug log untuk audit input PIN
+    console.log('[DEBUG][createPin] userId:', userId);
+    console.log('[DEBUG][createPin] pin (input):', pin, typeof pin);
     // Hash PIN sebelum disimpan
     const hashedPin = await bcrypt.hash(pin, 10);
+    console.log('[DEBUG][createPin] hashedPin:', hashedPin);
     
     // Simpan PIN ke database
     user.pin = hashedPin;
@@ -164,10 +167,13 @@ exports.updatePin = async (req, res) => {
         message: 'User belum memiliki PIN. Gunakan endpoint create untuk membuat PIN baru'
       });
     }
-    
+    // Debug log untuk audit PIN lama dan hash di database
+    console.log('[DEBUG][updatePin] userId:', userId);
+    console.log('[DEBUG][updatePin] oldPin (input):', oldPin);
+    console.log('[DEBUG][updatePin] user.pin (hash):', user.pin);
     // Verifikasi PIN lama
     const isPinValid = await bcrypt.compare(oldPin, user.pin);
-    
+    console.log('[DEBUG][updatePin] isPinValid:', isPinValid);
     if (!isPinValid) {
       return res.status(401).json({
         success: false,
