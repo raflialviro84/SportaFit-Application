@@ -13,16 +13,36 @@ function Register() {
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm(prev => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value
+  const { name, value, type, checked } = e.target;
+
+  if (name === "phone") {
+    const numericValue = value.replace(/\D/g, ''); // hanya angka
+    setForm(prevForm => ({
+      ...prevForm,
+      [name]: numericValue,
     }));
-  };
+  } else if (type === "checkbox") {
+    setForm(prevForm => ({
+      ...prevForm,
+      [name]: checked,
+    }));
+  } else {
+    setForm(prevForm => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  }
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    //setError("");
+
+    if (!form.phone) {
+    alert("No. Telepon wajib diisi dan harus berupa angka!");
+    return;
+  }
 
     // Validasi sederhana
     if (!form.agree) {
