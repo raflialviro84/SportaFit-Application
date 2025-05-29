@@ -250,7 +250,12 @@ function EditProfil1() {
                 type="tel"
                 name="noHP"
                 value={formData.noHP}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const onlyNums = e.target.value.replace(/\D/g, ""); // Hapus semua karakter non-digit
+                  handleChange({ target: { name: "noHP", value: onlyNums } });
+                }}
+                pattern="[0-9]*"
+                inputMode="numeric"
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sporta-blue"
               />
             </div>

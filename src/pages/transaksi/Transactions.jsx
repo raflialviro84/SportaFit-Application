@@ -33,6 +33,17 @@ export default function Transactions() {
     return () => { isMounted = false; };
   }, []);
 
+  // Filter: tampilkan semua transaksi, termasuk cancelled_by_system
+  const getStatusLabel = (status) => {
+    const lower = (status || '').toLowerCase();
+    if (lower === 'completed' || lower === 'confirmed') return { label: 'BERHASIL', color: 'bg-green-100 text-green-700' };
+    if (lower === 'expired') return { label: 'KADALUARSA', color: 'bg-red-100 text-red-800' };
+    if (lower === 'pending') return { label: 'TERTUNDA', color: 'bg-yellow-100 text-yellow-800' };
+    if (lower === 'cancelled_by_system') return { label: 'DIBATALKAN OLEH SISTEM', color: 'bg-gray-200 text-gray-800' };
+    if (lower === 'cancelled' || lower === 'dibatalkan') return { label: 'DIBATALKAN', color: 'bg-gray-100 text-gray-800' };
+    return { label: status || 'TIDAK DIKETAHUI', color: 'bg-blue-100 text-blue-800' };
+  };
+
   // Error boundary sederhana
   let content = null;
   try {
@@ -48,14 +59,14 @@ export default function Transactions() {
           </div>
         ) : (
           Array.isArray(transactions) ? transactions.map((tx) => {
-            const isSuccess = tx.status === "completed" || tx.status === "confirmed";
+            const statusInfo = getStatusLabel(tx.status);
             return (
               <div
                 key={tx.id}
-                onClick={() => navigate(isSuccess ? `/transaksi/success/${tx.id}` : `/transaksi/failed/${tx.id}`)}
+                onClick={() => navigate((tx.status === "completed" || tx.status === "confirmed") ? `/transaksi/success/${tx.id}` : `/transaksi/failed/${tx.id}`)}
                 className={`
                   bg-white rounded-2xl shadow-lg px-4 sm:px-8 py-5 mb-8 flex flex-col gap-2 border-l-4 transition hover:shadow-xl hover:-translate-y-1 duration-150 w-full max-w-2xl mx-auto
-                  ${isSuccess ? "border-green-400" : "border-red-400"}
+                  ${statusInfo.color}
                 `}
                 style={{ minWidth: 0 }}
               >
@@ -65,10 +76,10 @@ export default function Transactions() {
                     <div className="font-semibold break-words whitespace-normal">{tx.id}</div>
                   </div>
                   <span
-                    className={`text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap shadow-sm ${isSuccess ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}
+                    className={`text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap shadow-sm ${statusInfo.color}`}
                     style={{textTransform: 'uppercase'}}
                   >
-                    {isSuccess ? 'BERHASIL' : 'GAGAL'}
+                    {statusInfo.label}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1 mt-1">

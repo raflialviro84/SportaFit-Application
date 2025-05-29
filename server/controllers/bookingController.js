@@ -613,7 +613,8 @@ module.exports.getTransactions = async (req, res) => {
         [Op.or]: [
             { payment_status: 'paid' },
             { status: 'confirmed' },
-            { status: 'completed'}
+            { status: 'completed'},
+            { status: 'cancelled_by_system' } // <-- Add this line to include cancelled_by_system
         ]
       },
       include: [

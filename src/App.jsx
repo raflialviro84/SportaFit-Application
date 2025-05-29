@@ -149,6 +149,8 @@ function App() {
       <Route path="/profil" element={<PrivateRoute><Profil1 /></PrivateRoute>} />
       <Route path="/set-up-pin" element={<SetUpPinRoute><SetUpPin /></SetUpPinRoute>} />
       <Route path="/voucher/:id" element={<PrivateRoute><Voucher2 /></PrivateRoute>} />
+      <Route path="/lokasi" element={<LocationSelector />} />
+      <Route path="/profile/create-pin" element={<SetUpPin />} />
     </Routes>
   );
 }

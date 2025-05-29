@@ -115,7 +115,7 @@ export default function DetailTransactionFailed() {
               </p>
             )}
             <button
-              onClick={() => navigate("/pemesanan")}
+              onClick={() => navigate("-1")}
               className="mt-6 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
             >
               Kembali ke Beranda
@@ -155,8 +155,16 @@ export default function DetailTransactionFailed() {
       <main className="pt-20 pb-24 max-w-[434px] mx-auto px-4 space-y-6">
 
         {/* Status Gagal/Kadaluarsa */}
-        <div className="rounded-lg bg-red-500 text-white text-center py-1">
-          {(tx.status && tx.status.toUpperCase() === 'EXPIRED') ? 'GAGAL / EXPIRED' : 'KADALUARSA'}
+        <div className={`rounded-lg text-white text-center py-1 ${
+          tx.status && tx.status.toLowerCase() === 'cancelled_by_system'
+            ? 'bg-gray-400'
+            : 'bg-red-500'
+        }`}>
+          {tx.status && tx.status.toLowerCase() === 'cancelled_by_system'
+            ? 'DIBATALKAN OLEH SISTEM'
+            : (tx.status && tx.status.toUpperCase() === 'EXPIRED')
+              ? 'KADALUARSA'
+              : 'GAGAL'}
         </div>
 
         {/* ID & Waktu */}
@@ -228,9 +236,13 @@ export default function DetailTransactionFailed() {
               <span className="font-medium">{tx.paymentMethod || tx.payment_method || tx.payment?.method || '-'}</span>
             </div>
             <div className="flex justify-between">
-              <span>Status Pembayaran</span>
+              <span>Status Pemesanan</span>
               <span className="font-medium">
-                {(tx.status && tx.status.toUpperCase() === 'EXPIRED') ? 'TIDAK DI BAYAR' : 'KADALUARSA'}
+                {tx.status && tx.status.toLowerCase() === 'cancelled_by_system'
+                  ? 'DIBATALKAN OLEH SISTEM'
+                  : (tx.status && tx.status.toUpperCase() === 'EXPIRED')
+                    ? 'KADALUARSA'
+                    : 'GAGAL'}
               </span>
             </div>
             <div className="flex justify-between">

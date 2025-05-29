@@ -7,8 +7,8 @@ import { IoLocationOutline } from "react-icons/io5";
 
 const locations = [
   "Ambon", "Bali", "Balikpapan", "Bandung", "Banjarbaru", "Banjarmasin",
-  "Batam", "Baubau", "Bekasi", "Bengkulu", "Binjai", "Blitar",
-  "Bogor", "Bondowoso", "Cianjur", "Cikarang",
+  "Batam", "Baubau", "Bekasi", "Bengkulu", "Binjai", "Surabaya", "Sidoarjo", "Blitar",
+  "Bogor", "Bondowoso", "Cianjur", "Cikarang", "Jakarta", "Semarang",
 ];
 
 function LocationSelector() {

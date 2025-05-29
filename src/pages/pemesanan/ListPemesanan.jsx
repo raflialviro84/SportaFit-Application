@@ -94,6 +94,15 @@ export default function ListPemesanan() {
     };
   }, []);
 
+  // Filter hanya pesanan aktif (pending/unpaid/menunggu pembayaran) dan kadaluarsa
+  const activeBookings = Array.isArray(bookings)
+    ? bookings.filter(bk => {
+        const status = (bk.status || '').toLowerCase();
+        // Tampilkan pending, menunggu, expired, kadaluarsa
+        return status === 'pending' || status === 'menunggu' || status === 'expired' || status === 'kadaluarsa';
+      })
+    : [];
+
   // Helper to render status badge with consistent colors
   const renderStatus = (status) => {
     let bgColor, textColor, displayText = status;
@@ -124,14 +133,14 @@ export default function ListPemesanan() {
           <div className="flex justify-center items-center py-10">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
           </div>
-        ) : Array.isArray(bookings) && bookings.length === 0 ? (
+        ) : activeBookings.length === 0 ? (
           <div className="text-center py-10 text-gray-500">
             <p>Tidak ada pemesanan yang menunggu pembayaran</p>
           </div>
         ) : (
-          Array.isArray(bookings) ? bookings.map((bk, index) => (
+          activeBookings.map((bk, index) => (
             <BookingCard key={bk.invoice_number || bk.id || index} booking={bk} />
-          )) : null
+          ))
         )}
       </div>
     );

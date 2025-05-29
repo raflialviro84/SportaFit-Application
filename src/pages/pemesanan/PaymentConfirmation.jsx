@@ -173,6 +173,12 @@ export default function KonfirmasiPembayaran() {
             setShowPinModal(false);
             setPinError(""); 
             alert("PIN salah 3x. Pemesanan dibatalkan.");
+            // Batalkan pesanan di backend
+            try {
+              await BookingService.updateBookingStatus(bookingId, { status: 'cancelled_by_system' });
+            } catch (err) {
+              console.error('Gagal membatalkan pesanan secara otomatis:', err);
+            }
             navigate("/pemesanan");
             setIsProcessing(false); // Reset on navigation
           } else {
