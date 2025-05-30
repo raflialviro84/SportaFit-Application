@@ -55,8 +55,10 @@ export function AuthProvider({ children }) {
       console.log("[Auth] Login response:", data);
       if (!response.ok) throw new Error(data.message || "Login gagal");
       const token = data.user?.token || data.token;
+      const refreshToken = data.user?.refreshToken || data.refreshToken;
       if (!token) throw new Error("Token tidak ditemukan di response login");
       localStorage.setItem("token", token);
+      if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
       await refreshUser();
       return data.user;
     } catch (err) {
@@ -75,6 +77,7 @@ export function AuthProvider({ children }) {
     }
     setUser(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     setError(null);
   };
 

@@ -33,6 +33,31 @@ async function register({ name, email, password, phone }) {
   }
 }
 
+// Penyimpanan refresh token (in-memory, untuk produksi sebaiknya di DB/Redis)
+const refreshTokens = new Map();
+
+function generateRefreshToken(userId) {
+  const refreshToken = jwt.sign(
+    { userId },
+    process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key',
+    { expiresIn: '30d' }
+  );
+  refreshTokens.set(refreshToken, userId);
+  return refreshToken;
+}
+
+function verifyRefreshToken(token) {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key');
+    if (refreshTokens.has(token)) {
+      return decoded;
+    }
+    throw new Error('Refresh token tidak valid');
+  } catch {
+    throw new Error('Refresh token tidak valid');
+  }
+}
+
 // Fungsi login
 async function login({ email, password }) {
   try {
@@ -56,8 +81,10 @@ async function login({ email, password }) {
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET || "your-secret-key",
-      { expiresIn: "7d" }
+      { expiresIn: "15m" } // access token lebih pendek
     );
+    // Buat refresh token
+    const refreshToken = generateRefreshToken(user.id);
 
     // Return user (tanpa password dan pin) + token
     const userData = user.toJSON();
@@ -66,7 +93,8 @@ async function login({ email, password }) {
 
     return {
       ...userData,
-      token
+      token,
+      refreshToken
     };
   } catch (error) {
     console.error(`Error in login service: ${error.message}`);
@@ -209,10 +237,28 @@ async function verifyCode(email, code) {
   }
 }
 
+// Fungsi untuk refresh token
+function refreshAccessToken(refreshToken) {
+  try {
+    const decoded = verifyRefreshToken(refreshToken);
+    const newAccessToken = jwt.sign(
+      { userId: decoded.userId },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '15m' }
+    );
+    return newAccessToken;
+  } catch (e) {
+    throw e;
+  }
+}
+
 // Export semua fungsi
 module.exports = {
   register,
   login,
   forgotPassword,
-  verifyCode
+  verifyCode,
+  generateRefreshToken,
+  verifyRefreshToken,
+  refreshAccessToken
 };

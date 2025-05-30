@@ -73,4 +73,7 @@ router.get("/me", (req, res) => {
 // Endpoint logout
 router.post("/logout", authController.logout);
 
+// Endpoint untuk refresh token
+router.post('/refresh-token', authController.refreshToken);
+
 module.exports = router;

@@ -185,3 +185,17 @@ exports.resetPassword = async (req, res) => {
     res.status(500).json({ message: err.message || "Gagal memperbarui kata sandi" });
   }
 };
+
+// Endpoint untuk refresh token
+exports.refreshToken = (req, res) => {
+  const { refreshToken } = req.body;
+  if (!refreshToken) {
+    return res.status(400).json({ message: 'Refresh token wajib diisi.' });
+  }
+  try {
+    const newAccessToken = authService.refreshAccessToken(refreshToken);
+    res.json({ accessToken: newAccessToken });
+  } catch (err) {
+    res.status(401).json({ message: err.message || 'Refresh token tidak valid.' });
+  }
+};

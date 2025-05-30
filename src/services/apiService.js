@@ -3,6 +3,41 @@
 // Base API URL
 export const API_BASE_URL = '/api';
 
+// Helper untuk refresh token
+async function refreshAccessToken() {
+  const refreshToken = localStorage.getItem('refreshToken');
+  if (!refreshToken) throw new Error('No refresh token found');
+  const res = await fetch(`${API_BASE_URL}/auth/refresh-token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ refreshToken })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Gagal refresh token');
+  localStorage.setItem('token', data.accessToken);
+  return data.accessToken;
+}
+
+// Helper fetch yang auto refresh token jika 401
+export async function fetchWithAuth(url, options = {}, retry = true) {
+  let token = localStorage.getItem('token');
+  options.headers = options.headers || {};
+  if (token) options.headers['Authorization'] = `Bearer ${token}`;
+  let response = await fetch(url, options);
+  if (response.status === 401 && retry) {
+    try {
+      token = await refreshAccessToken();
+      options.headers['Authorization'] = `Bearer ${token}`;
+      response = await fetch(url, options);
+    } catch {
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+      throw new Error('Session expired. Please login again.');
+    }
+  }
+  return response;
+}
+
 // Arena Services
 export const ArenaService = {
   // Get all arenas
@@ -165,22 +200,10 @@ export const VoucherService = {
   // Get user's vouchers
   getUserVouchers: async () => {
     try {
-      const token = localStorage.getItem('token');
-
-      if (!token) {
-        throw new Error('No authentication token found');
-      }
-
-      const response = await fetch(`${API_BASE_URL}/vouchers/user/my-vouchers`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
+      const response = await fetchWithAuth(`${API_BASE_URL}/vouchers/user/my-vouchers`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
       return await response.json();
     } catch (error) {
       console.error('Error fetching user vouchers:', error);
@@ -191,26 +214,15 @@ export const VoucherService = {
   // Add voucher to user
   addVoucherToUser: async (voucherCode) => {
     try {
-      const token = localStorage.getItem('token');
-
-      if (!token) {
-        throw new Error('No authentication token found');
-      }
-
-      const response = await fetch(`${API_BASE_URL}/vouchers/user/add`, {
+      const response = await fetchWithAuth(`${API_BASE_URL}/vouchers/user/add`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ voucherCode })
       });
-
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.message || 'Failed to add voucher');
       }
-
       return await response.json();
     } catch (error) {
       console.error('Error adding voucher to user:', error);
@@ -221,26 +233,15 @@ export const VoucherService = {
   // Use voucher
   useVoucher: async (voucherId) => {
     try {
-      const token = localStorage.getItem('token');
-
-      if (!token) {
-        throw new Error('No authentication token found');
-      }
-
-      const response = await fetch(`${API_BASE_URL}/vouchers/user/use`, {
+      const response = await fetchWithAuth(`${API_BASE_URL}/vouchers/user/use`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ voucherId })
       });
-
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.message || 'Failed to use voucher');
       }
-
       return await response.json();
     } catch (error) {
       console.error('Error using voucher:', error);
