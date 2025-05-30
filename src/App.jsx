@@ -36,7 +36,7 @@ import KebijakanPrivasi1       from "./pages/profile/KebijakanPrivasi1";
 import FAQ1                    from "./pages/profile/FAQ1";
 import SetUpPin                from "./pages/profile/SetUpPin";
 
-import Arena                   from "./pages/pemesanan/arena";
+import Arena                   from "./pages/pemesanan/Arena";
 import DetailArena             from "./pages/pemesanan/DetailArena";
 import LapanganBooking         from "./pages/pemesanan/LapanganBooking";
 import PaymentDetail           from "./pages/pemesanan/PaymentDetail";
