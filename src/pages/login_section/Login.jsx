@@ -45,6 +45,10 @@ function Login() {
 
       // Simpan token ke localStorage agar AuthProvider bisa persist login
       localStorage.setItem("token", data.user?.token || data.token);
+      // Simpan user ke localStorage agar halaman lain bisa akses userId
+      if (data.user) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+      }
       // Paksa reload agar AuthProvider membaca token baru
       window.location.href = "/home";
       // (kode di bawah ini tidak akan jalan karena reload)

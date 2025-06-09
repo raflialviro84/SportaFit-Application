@@ -56,8 +56,18 @@ export default function LapanganBooking() {
   const [loading, setLoading] = useState(true); // Added general loading state
 
   // Ambil user dari localStorage (atau context jika ada)
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const userId = user?.id;
+  let user = null;
+  let userId = null;
+  try {
+    user = JSON.parse(localStorage.getItem('user'));
+    userId = user && user.id ? user.id : null;
+    if (!userId) {
+      console.warn('User object from localStorage:', user);
+    }
+  } catch (e) {
+    console.error('Error parsing user from localStorage:', e);
+    userId = null;
+  }
 
   // Validasi userId and initial data fetch coordination
   useEffect(() => {
