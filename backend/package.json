@@ -1,0 +1,39 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "migrate:social": "node migrations/add_social_login_columns.js",
+    "migrate:arena": "node migrations/create_arena_tables.js",
+    "migrate:pin": "node migrations/add_pin_column.js",
+    "migrate": "npm run migrate:social && npm run migrate:arena && npm run migrate:pin",
+    "migrate:all": "node migrations/index.js",
+    "db:reset": "node scripts/resetDatabase.js",
+    "db:seed": "node scripts/generateDummyData.js",
+    "db:seed-comprehensive": "node scripts/seedComprehensiveData.js",
+    "db:seed-bookings": "node scripts/seedBookings.js",
+    "db:seed-all": "node scripts/seedAll.js",
+    "db:check": "node scripts/checkData.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.0",
+    "node-cron": "^4.1.0",
+    "passport": "^0.6.0",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-twitter": "^0.1.5",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

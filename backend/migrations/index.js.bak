@@ -1,0 +1,54 @@
+// server/migrations/index.js
+const createArenaTables = require('./create_arena_tables');
+const createBookingTable = require('./create_booking_table');
+const updateBookingsTable = require('./update_bookings_table');
+const createVouchersTable = require('./vouchers');
+const addPinColumn = require('./add_pin_column');
+const createUserTable = require('./create_user_table');
+const addSocialLoginColumns = require('./add_social_login_columns');
+const addBirthDateColumn = require('./add_birth_date_column');
+const addPhotoUrlColumn = require('./add_photo_url_column');
+const addCategoryToArenasTable = require('./add_category_to_arenas_table');
+const addImagesToArenasTable = require('./add_images_to_arenas_table');
+
+async function runMigrations() {
+  try {
+    console.log('Starting migrations...');
+
+    // Run migrations in sequence
+    await createUserTable();
+    await addSocialLoginColumns();
+    await addBirthDateColumn();
+    await addPhotoUrlColumn();
+    await addPinColumn();
+    await createArenaTables();
+    await addCategoryToArenasTable();
+    await addImagesToArenasTable();
+    await createBookingTable();
+    await updateBookingsTable();
+    await createVouchersTable();
+
+    console.log('All migrations completed successfully.');
+    // No process.exit() here, allow the caller to handle completion/errors
+  } catch (error) {
+    console.error('Error running migrations:', error);
+    throw error; // Re-throw the error to be caught by the caller
+  }
+}
+
+// If called directly (e.g., by `npm run migrate:all`)
+if (require.main === module) {
+  runMigrations()
+    .then(() => {
+      console.log('Migration script finished successfully.');
+      process.exit(0); // Explicitly exit with 0 on success
+    })
+    .catch(() => {
+      // Error is already logged by runMigrations
+      console.error("Migration script failed overall.");
+      process.exit(1); // Explicitly exit with 1 on failure
+    });
+}
+
+// Export for use in server startup (e.g., server/index.js)
+module.exports = runMigrations;
