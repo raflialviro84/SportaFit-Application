@@ -55,12 +55,12 @@ export default class VoucherService {
         console.log("Server health check result:", serverCheckResponse.type);
       } catch (serverCheckError) {
         console.error("Server check failed:", serverCheckError);
-        throw new Error("Koneksi gagal. Pastikan server berjalan di localhost:3000");
+        throw new Error("Koneksi gagal. Pastikan server berjalan di uas.sekai.id:3000");
       }
       
       // Rethrow original error with better message
       if (error.message === "Failed to fetch") {
-        throw new Error("Koneksi gagal. Pastikan server berjalan di localhost:3000");
+        throw new Error("Koneksi gagal. Pastikan server berjalan di uas.sekai.id:3000");
       }
       throw error;
     }
@@ -104,7 +104,7 @@ export default class VoucherService {
     } catch (error) {
       console.error("Error fetching admin vouchers:", error);
       if (error.message === "Failed to fetch") {
-        throw new Error("Koneksi gagal. Pastikan server berjalan di localhost:3000");
+        throw new Error("Koneksi gagal. Pastikan server berjalan di uas.sekai.id:3000");
       }
       throw error;
     }
@@ -146,7 +146,7 @@ export default class VoucherService {
     } catch (error) {
       console.error(`Error fetching voucher with ID ${id}:`, error);
       if (error.message === "Failed to fetch") {
-        throw new Error("Koneksi gagal. Pastikan server berjalan di localhost:3000");
+        throw new Error("Koneksi gagal. Pastikan server berjalan di uas.sekai.id:3000");
       }
       throw error;
     }
@@ -252,7 +252,7 @@ export default class VoucherService {
     } catch (error) {
       console.error("Error adding voucher to user:", error);
       if (error.message === "Failed to fetch") {
-        throw new Error("Koneksi gagal. Pastikan server berjalan di localhost:3000");
+        throw new Error("Koneksi gagal. Pastikan server berjalan di uas.sekai.id:3000");
       }
       throw error;
     }
@@ -299,7 +299,7 @@ export default class VoucherService {
     } catch (error) {
       console.error("Error using voucher:", error);
       if (error.message === "Failed to fetch") {
-        throw new Error("Koneksi gagal. Pastikan server berjalan di localhost:3000");
+        throw new Error("Koneksi gagal. Pastikan server berjalan di uas.sekai.id:3000");
       }
       throw error;
     }

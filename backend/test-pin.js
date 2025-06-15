@@ -6,7 +6,7 @@ async function testPin() {
   try {
     // 1. Check if user has PIN
     console.log('1. Checking if user has PIN...');
-    const checkResponse = await fetch('http://localhost:3000/api/pin/check', {
+    const checkResponse = await fetch('http://uas.sekai.id:3000/api/pin/check', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const checkData = await checkResponse.json();
@@ -14,7 +14,7 @@ async function testPin() {
 
     // 2. Try to update PIN
     console.log('\n2. Trying to update PIN...');
-    const updateResponse = await fetch('http://localhost:3000/api/pin/update', {
+    const updateResponse = await fetch('http://uas.sekai.id:3000/api/pin/update', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

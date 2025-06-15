@@ -16,7 +16,7 @@ Dokumen ini menjelaskan cara mengatur OAuth (Google, Facebook, Twitter) untuk ap
 3. Buka "APIs & Services" > "Credentials"
 4. Klik "Create Credentials" > "OAuth client ID"
 5. Pilih "Web application" sebagai Application type
-6. Tambahkan "http://localhost:3000/api/auth/google/callback" sebagai Authorized redirect URI
+6. Tambahkan "http://uas.sekai.id:3000/api/auth/google/callback" sebagai Authorized redirect URI
 7. Klik "Create"
 8. Salin Client ID dan Client Secret ke file `.env`:
    ```
@@ -31,7 +31,7 @@ Dokumen ini menjelaskan cara mengatur OAuth (Google, Facebook, Twitter) untuk ap
 3. Buka "Settings" > "Basic"
 4. Salin App ID dan App Secret
 5. Buka "Facebook Login" > "Settings"
-6. Tambahkan "http://localhost:3000/api/auth/facebook/callback" sebagai Valid OAuth Redirect URI
+6. Tambahkan "http://uas.sekai.id:3000/api/auth/facebook/callback" sebagai Valid OAuth Redirect URI
 7. Simpan perubahan
 8. Salin App ID dan App Secret ke file `.env`:
    ```
@@ -45,7 +45,7 @@ Dokumen ini menjelaskan cara mengatur OAuth (Google, Facebook, Twitter) untuk ap
 2. Buat project dan aplikasi baru atau pilih yang sudah ada
 3. Buka "Settings" > "Edit" di bagian "User authentication settings"
 4. Aktifkan "OAuth 1.0a"
-5. Tambahkan "http://localhost:3000/api/auth/twitter/callback" sebagai Callback URI
+5. Tambahkan "http://uas.sekai.id:3000/api/auth/twitter/callback" sebagai Callback URI
 6. Simpan perubahan
 7. Salin API Key (Consumer Key) dan API Secret (Consumer Secret) ke file `.env`:
    ```

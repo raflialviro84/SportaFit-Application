@@ -10,13 +10,13 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://uas.sekai.id:3000',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path,  // Tidak me-rewrite path, biarkan /api tetap ada
       },
       '/events': {
-        target: 'http://localhost:3000',
+        target: 'http://uas.sekai.id:3000',
         changeOrigin: true,
         secure: false,
       }

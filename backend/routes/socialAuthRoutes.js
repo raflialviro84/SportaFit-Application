@@ -16,7 +16,7 @@ const generateToken = (user) => {
 router.get("/google", (req, res, next) => {
   console.log("Starting Google OAuth flow...");
   console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID);
-  console.log("Callback URL:", "http://localhost:3000/api/auth/google/callback");
+  console.log("Callback URL:", "http://uas.sekai.id:3000/api/auth/google/callback");
   next();
 }, passport.authenticate("google", { scope: ["profile", "email"] }));
 

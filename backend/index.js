@@ -194,9 +194,9 @@ app.use('*', (req, res) => {
     // Start server
     app.listen(port, () => {
       console.log(`✅ Server started successfully!`);
-      console.log(`🚀 Server running at http://localhost:${port}`);
-      console.log(`📊 Admin Dashboard: http://localhost:${port}/admin`);
-      console.log(`🏥 Health Check: http://localhost:${port}/api/health`);
+      console.log(`🚀 Server running at http://uas.sekai.id:${port}`);
+      console.log(`📊 Admin Dashboard: http://uas.sekai.id:${port}/admin`);
+      console.log(`🏥 Health Check: http://uas.sekai.id:${port}/api/health`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);

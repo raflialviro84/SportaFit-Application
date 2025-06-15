@@ -30,6 +30,9 @@ function AdminLogin() {
     }
 
     try {
+      setIsLoading(true);
+      const apiUrl = "http://uas.sekai.id:3000/api/auth/admin-login";
+      
       // Buat objek payload yang akan dikirim ke server
       const payload = {
         email: form.email,
@@ -37,9 +40,6 @@ function AdminLogin() {
       };
       
       console.log("Sending admin login request with:", { email: form.email });
-      
-      // Gunakan satu endpoint yang konsisten (localhost) karena frontend dan backend sudah berjalan
-      const apiUrl = "http://localhost:3000/api/auth/admin-login";
       
       console.log(`Connecting to: ${apiUrl}`);
       const res = await fetch(apiUrl, {

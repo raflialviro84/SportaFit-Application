@@ -2,7 +2,7 @@
 // Utility for subscribing to backend SSE events (real-time booking updates)
 
 // Selalu gunakan localhost untuk menghindari masalah CORS
-const SSE_URL = 'http://localhost:3000/api/events';
+const SSE_URL = 'http://uas.sekai.id:3000/api/events';
 
 console.log("Using SSE URL:", SSE_URL);
 

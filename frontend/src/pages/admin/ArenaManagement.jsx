@@ -46,8 +46,8 @@ function ArenaManagement() {
       let response;
       let data = [];
 
-      // Gunakan selalu localhost:3000 untuk API URL
-      const apiUrl = 'http://localhost:3000/api/arenas';
+      // Gunakan selalu uas.sekai.id:3000 untuk API URL
+      const apiUrl = 'http://uas.sekai.id:3000/api/arenas';
       
       console.log('Using API URL:', apiUrl);
 
@@ -173,8 +173,8 @@ function ArenaManagement() {
         arena.id === id ? { ...arena, status: newStatus } : arena
       ));
 
-      // Gunakan selalu localhost:3000 untuk API URL
-      const apiUrl = `http://localhost:3000/api/arenas/${id}`;
+      // Gunakan selalu uas.sekai.id:3000 untuk API URL
+      const apiUrl = `http://uas.sekai.id:3000/api/arenas/${id}`;
       
       console.log('Using API URL for status update:', apiUrl);
 
